@@ -1,0 +1,27 @@
+pluginManagement {
+    plugins {
+        id "io.freefair.lombok" version "9.4.0"
+        id 'org.springframework.boot' version '3.5.14'
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+    id 'org.ajoberstar.reckon.settings' version '2.0.0'
+    id 'eu.xenit.enterprise-conventions.oss' version '0.7.0'
+}
+
+reckon {
+    defaultInferredScope = 'patch'
+    snapshots()
+    scopeCalc = calcScopeFromCommitMessages()
+    stageCalc = { inventory, targetNormal -> java.util.Optional.empty() }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'contentgrid-common'
