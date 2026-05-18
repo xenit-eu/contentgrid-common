@@ -1,0 +1,64 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+ext.features = ["springBoot3", "springBoot4"]
+
+features.each { String name ->
+    java.registerFeature(name) {
+        usingSourceSet(sourceSets.create(name) {
+            java {
+                srcDir 'src/shared/java'
+            }
+            resources {
+                srcDir 'src/shared/resources'
+            }
+
+        })
+        capability("com.contentgrid.common", "spring-boot", version.toString())
+        def kebabCased = name.replaceAll(/([A-Z])/, '-$1').replaceAll(/([a-zA-Z])(\d)/, '$1-$2').toLowerCase()
+        capability("com.contentgrid.common", kebabCased, version.toString())
+        withJavadocJar()
+        withSourcesJar()
+    }
+}
+
+def createConfiguration(String name) {
+    var commonConfig = configurations.create("common${name.capitalize()}") {
+        canBeConsumed = false
+        canBeResolved = false
+        canBeDeclared = true
+    }
+    features.each {
+        configurations.named("${it}${name.capitalize()}").configure {
+            extendsFrom(commonConfig)
+        }
+    }
+}
+
+createConfiguration("implementation")
+createConfiguration("compileOnly")
+
+components.java.withVariantsFromConfiguration(configurations.apiElements) { skip() }
+components.java.withVariantsFromConfiguration(configurations.runtimeElements) { skip() }
+components.java.withVariantsFromConfiguration(configurations.sourcesElements) { skip() }
+components.java.withVariantsFromConfiguration(configurations.javadocElements) { skip() }
+
+dependencies {
+    springBoot3Implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.14')
+    springBoot4Implementation platform('org.springframework.boot:spring-boot-dependencies:4.0.6')
+
+    commonImplementation 'org.springframework.boot:spring-boot-autoconfigure'
+    commonImplementation project(':contentgrid-common-spring-actuators')
+
+    commonCompileOnly 'org.springframework.boot:spring-boot-actuator-autoconfigure'
+    commonCompileOnly 'org.springframework.security:spring-security-web'
+    commonCompileOnly 'org.springframework.security:spring-security-config'
+    commonCompileOnly 'jakarta.servlet:jakarta.servlet-api'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-security'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-micrometer-metrics'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-health'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-actuator'
+}
