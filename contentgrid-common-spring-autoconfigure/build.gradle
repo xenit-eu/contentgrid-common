@@ -44,6 +44,11 @@ def createConfiguration(String name) {
 createConfiguration("implementation")
 createConfiguration("compileOnly")
 
+// Disable default tasks
+tasks.named("jar") { enabled = false }
+tasks.named("sourcesJar") { enabled = false }
+tasks.named("javadocJar") { enabled = false }
+
 components.java.withVariantsFromConfiguration(configurations.apiElements) { skip() }
 components.java.withVariantsFromConfiguration(configurations.runtimeElements) { skip() }
 components.java.withVariantsFromConfiguration(configurations.sourcesElements) { skip() }
