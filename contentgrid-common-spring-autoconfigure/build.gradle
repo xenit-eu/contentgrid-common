@@ -52,6 +52,7 @@ dependencies {
     commonImplementation 'org.springframework.boot:spring-boot-autoconfigure'
     commonImplementation project(':contentgrid-common-spring-actuators')
 
+    // ActuatorEndpointsWebSecurityAutoConfiguration
     commonCompileOnly 'org.springframework.boot:spring-boot-actuator-autoconfigure'
     commonCompileOnly 'org.springframework.security:spring-security-web'
     commonCompileOnly 'org.springframework.security:spring-security-config'
@@ -61,4 +62,7 @@ dependencies {
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-micrometer-metrics'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-health'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-actuator'
+
+    // PatchingWebMvcConfigurer
+    commonCompileOnly 'org.springframework:spring-webmvc'
 }
