@@ -22,6 +22,10 @@ features.each { String name ->
         withJavadocJar()
         withSourcesJar()
     }
+
+    tasks.named("assemble") {
+        dependsOn(tasks.named("${name}Jar"))
+    }
 }
 
 def createConfiguration(String name) {
