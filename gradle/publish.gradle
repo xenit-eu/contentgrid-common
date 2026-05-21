@@ -6,7 +6,7 @@ publishing {
             pom {
                 url = 'https://github.com/xenit-eu/contentgrid-common'
                 name = project.name
-                description = project.description
+                description = providers.provider { project.description }
 
                 scm {
                     connection = 'scm:git:git@github.com:xenit-eu/contentgrid-common.git'

@@ -3,6 +3,8 @@ plugins {
     id 'maven-publish'
 }
 
+project.description = "Library applying inhouse fixes and opinions to spring boot services in the Contentgrid stack"
+
 ext.features = ["springBoot3", "springBoot4"]
 
 features.each { String name ->
