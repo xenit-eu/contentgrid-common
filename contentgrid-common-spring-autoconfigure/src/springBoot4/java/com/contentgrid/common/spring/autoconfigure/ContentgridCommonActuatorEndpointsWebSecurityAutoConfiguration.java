@@ -40,7 +40,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
         HttpServletRequest.class, // jakarta.servlet-api
         HttpSecurity.class // spring-security-config
 })
-public class ActuatorEndpointsWebSecurityAutoConfiguration {
+public class ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration {
     @Bean
     @ConditionalOnClass(InfoEndpoint.class) // spring-boot-actuator
     ExposedActuatorEndpoint exposedInfoActuatorEndpoint() {
@@ -67,7 +67,7 @@ public class ActuatorEndpointsWebSecurityAutoConfiguration {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    SecurityFilterChain actuatorEndpointsSecurityFilterChain(HttpSecurity http, Environment environment,
+    SecurityFilterChain contentgridCommonActuatorEndpointsSecurityFilterChain(HttpSecurity http, Environment environment,
             ObjectProvider<ExposedActuatorEndpoint> exposedEndpoints) {
 
         http
@@ -80,7 +80,8 @@ public class ActuatorEndpointsWebSecurityAutoConfiguration {
                                 // Exposed endpoints are only accessible when the management server is running on separate port from the main server (for isolation)
                                 new AndRequestMatcher(
                                         request -> ManagementPortType.get(environment) == ManagementPortType.DIFFERENT,
-                                        matcher(exposedEndpoints, Predicate.not(ExposedActuatorEndpoint::isAllowPublicExposure))
+                                        matcher(exposedEndpoints,
+                                                Predicate.not(ExposedActuatorEndpoint::isAllowPublicExposure))
                                 )
                         )
                         .permitAll());
@@ -89,9 +90,11 @@ public class ActuatorEndpointsWebSecurityAutoConfiguration {
         return http.build();
     }
 
-    private static RequestMatcher matcher(ObjectProvider<ExposedActuatorEndpoint> exposedEndpoints, Predicate<ExposedActuatorEndpoint> filter) {
-        var endpoints = exposedEndpoints.stream().filter(filter).map(ExposedActuatorEndpoint::getEndpoint).toArray(Class[]::new);
-        if(endpoints.length == 0) {
+    private static RequestMatcher matcher(ObjectProvider<ExposedActuatorEndpoint> exposedEndpoints,
+            Predicate<ExposedActuatorEndpoint> filter) {
+        var endpoints = exposedEndpoints.stream().filter(filter).map(ExposedActuatorEndpoint::getEndpoint)
+                .toArray(Class[]::new);
+        if (endpoints.length == 0) {
             return req -> false;
         }
         return EndpointRequest.to(endpoints);
