@@ -1,90 +1,10 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'spring-boot-multi-version'
 }
 
-project.description = "Library applying inhouse fixes and opinions to spring boot services in the Contentgrid stack"
-
-ext.features = ["springBoot3", "springBoot4"]
-
-features.each { String name ->
-    def mainSourceSet = sourceSets.create(name) {
-        java {
-            srcDir 'src/shared/java'
-        }
-        resources {
-            srcDir 'src/shared/resources'
-        }
-    }
-    java.registerFeature(name) {
-        usingSourceSet(mainSourceSet)
-        capability("com.contentgrid.common", "spring-boot", version.toString())
-        def kebabCased = name.replaceAll(/([A-Z])/, '-$1').replaceAll(/([a-zA-Z])(\d)/, '$1-$2').toLowerCase()
-        capability("com.contentgrid.common", kebabCased, version.toString())
-        withJavadocJar()
-        withSourcesJar()
-    }
-
-    tasks.named("assemble") {
-        dependsOn(tasks.named(mainSourceSet.jarTaskName))
-    }
-
-    def testSourceSet = sourceSets.create("${name}Test") {
-        java {
-            srcDir 'src/sharedTest/java'
-        }
-        resources {
-            srcDir 'src/sharedTest/resources'
-        }
-        compileClasspath += mainSourceSet.output
-        runtimeClasspath += mainSourceSet.output
-    }
-
-    configurations[testSourceSet.implementationConfigurationName].extendsFrom(configurations[mainSourceSet.implementationConfigurationName])
-    configurations[testSourceSet.compileOnlyConfigurationName].extendsFrom(configurations[mainSourceSet.compileOnlyConfigurationName])
-    configurations[testSourceSet.runtimeOnlyConfigurationName].extendsFrom(configurations[mainSourceSet.runtimeOnlyConfigurationName])
-
-    tasks.register("${name}Test", Test) {
-        description = "Runs tests for ${name}"
-        group = "verification"
-        testClassesDirs = testSourceSet.output.classesDirs
-        classpath = testSourceSet.runtimeClasspath
-        useJUnitPlatform()
-    }
-
-    tasks.named('check').configure {
-        dependsOn("${name}Test")
-    }
-}
-
-def createConfiguration(String name) {
-    var commonConfig = configurations.create("common${name.capitalize()}") {
-        canBeConsumed = false
-        canBeResolved = false
-        canBeDeclared = true
-    }
-    features.each {
-        configurations.named("${it}${name.capitalize()}").configure {
-            extendsFrom(commonConfig)
-        }
-    }
-}
-
-createConfiguration("implementation")
-createConfiguration("compileOnly")
-createConfiguration("testImplementation")
-createConfiguration("testRuntimeOnly")
-
-
-// Disable default tasks
-tasks.named("jar") { enabled = false }
-tasks.named("sourcesJar") { enabled = false }
-tasks.named("javadocJar") { enabled = false }
-
-components.java.withVariantsFromConfiguration(configurations.apiElements) { skip() }
-components.java.withVariantsFromConfiguration(configurations.runtimeElements) { skip() }
-components.java.withVariantsFromConfiguration(configurations.sourcesElements) { skip() }
-components.java.withVariantsFromConfiguration(configurations.javadocElements) { skip() }
+description = "Autoconfiguration to apply ContentGrid common configuration to Spring Boot services"
 
 dependencies {
     springBoot3Implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.14')

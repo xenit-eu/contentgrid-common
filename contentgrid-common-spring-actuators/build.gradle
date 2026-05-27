@@ -4,4 +4,4 @@ plugins {
     id 'io.freefair.lombok'
 }
 
-description = "Wrapper for Spring Actuator endpoints to facilitate websecurity configuration."
+description = "Wrapper for Spring Actuator endpoints to facilitate websecurity configuration"

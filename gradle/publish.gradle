@@ -37,15 +37,6 @@ pluginManager.withPlugin('java-library') {
         publications {
             library(MavenPublication) {
                 from components.java
-
-                versionMapping {
-                    usage("java-api") {
-                        fromResolutionResult()
-                    }
-                    usage("java-runtime") {
-                        fromResolutionResult()
-                    }
-                }
             }
         }
     }
