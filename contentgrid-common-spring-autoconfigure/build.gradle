@@ -8,16 +8,16 @@ project.description = "Library applying inhouse fixes and opinions to spring boo
 ext.features = ["springBoot3", "springBoot4"]
 
 features.each { String name ->
+    def mainSourceSet = sourceSets.create(name) {
+        java {
+            srcDir 'src/shared/java'
+        }
+        resources {
+            srcDir 'src/shared/resources'
+        }
+    }
     java.registerFeature(name) {
-        usingSourceSet(sourceSets.create(name) {
-            java {
-                srcDir 'src/shared/java'
-            }
-            resources {
-                srcDir 'src/shared/resources'
-            }
-
-        })
+        usingSourceSet(mainSourceSet)
         capability("com.contentgrid.common", "spring-boot", version.toString())
         def kebabCased = name.replaceAll(/([A-Z])/, '-$1').replaceAll(/([a-zA-Z])(\d)/, '$1-$2').toLowerCase()
         capability("com.contentgrid.common", kebabCased, version.toString())
@@ -26,7 +26,34 @@ features.each { String name ->
     }
 
     tasks.named("assemble") {
-        dependsOn(tasks.named("${name}Jar"))
+        dependsOn(tasks.named(mainSourceSet.jarTaskName))
+    }
+
+    def testSourceSet = sourceSets.create("${name}Test") {
+        java {
+            srcDir 'src/sharedTest/java'
+        }
+        resources {
+            srcDir 'src/sharedTest/resources'
+        }
+        compileClasspath += mainSourceSet.output
+        runtimeClasspath += mainSourceSet.output
+    }
+
+    configurations[testSourceSet.implementationConfigurationName].extendsFrom(configurations[mainSourceSet.implementationConfigurationName])
+    configurations[testSourceSet.compileOnlyConfigurationName].extendsFrom(configurations[mainSourceSet.compileOnlyConfigurationName])
+    configurations[testSourceSet.runtimeOnlyConfigurationName].extendsFrom(configurations[mainSourceSet.runtimeOnlyConfigurationName])
+
+    tasks.register("${name}Test", Test) {
+        description = "Runs tests for ${name}"
+        group = "verification"
+        testClassesDirs = testSourceSet.output.classesDirs
+        classpath = testSourceSet.runtimeClasspath
+        useJUnitPlatform()
+    }
+
+    tasks.named('check').configure {
+        dependsOn("${name}Test")
     }
 }
 
@@ -45,6 +72,9 @@ def createConfiguration(String name) {
 
 createConfiguration("implementation")
 createConfiguration("compileOnly")
+createConfiguration("testImplementation")
+createConfiguration("testRuntimeOnly")
+
 
 // Disable default tasks
 tasks.named("jar") { enabled = false }
@@ -78,4 +108,20 @@ dependencies {
     commonCompileOnly 'org.springframework:spring-webmvc'
 
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-webmvc'
+
+    // Tests
+    commonTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Application dependencies
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-security'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    springBoot3TestImplementation 'org.springframework.boot:spring-boot-starter-web'
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // Test utilities
+    commonTestImplementation 'org.springframework.security:spring-security-test'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
 }
