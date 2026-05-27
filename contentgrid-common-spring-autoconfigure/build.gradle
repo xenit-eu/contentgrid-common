@@ -74,6 +74,8 @@ dependencies {
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-health'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-actuator'
 
-    // PatchingWebMvcConfigurer
+    // DisconnectedClientHandlingWebMvcAutoConfiguration
     commonCompileOnly 'org.springframework:spring-webmvc'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-webmvc'
 }

@@ -4,13 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
-@ConditionalOnClass(WebMvcConfigurer.class)
 public class DisconnectedClientHandlingWebMvcConfigurer implements WebMvcConfigurer {
 
     @Override
