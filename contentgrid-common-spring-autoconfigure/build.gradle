@@ -7,8 +7,8 @@ plugins {
 description = "Autoconfiguration to apply ContentGrid common configuration to Spring Boot services"
 
 dependencies {
-    springBoot3Implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.14')
-    springBoot4Implementation platform('org.springframework.boot:spring-boot-dependencies:4.0.6')
+    springBoot3Platform platform('org.springframework.boot:spring-boot-dependencies:3.5.14')
+    springBoot4Platform platform('org.springframework.boot:spring-boot-dependencies:4.0.6')
 
     commonImplementation 'org.springframework.boot:spring-boot-autoconfigure'
     commonImplementation project(':contentgrid-common-spring-actuators')

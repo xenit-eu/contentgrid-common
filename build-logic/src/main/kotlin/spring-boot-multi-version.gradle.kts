@@ -58,6 +58,22 @@ features.forEach { name ->
     tasks.named("check") {
         dependsOn("${name}Test")
     }
+
+    // A build-only platform configuration: wired into resolve-time classpaths but not
+    // into the published runtimeElements/apiElements, so it doesn't appear in metadata.
+    val platformConfig = configurations.create("${name}Platform") {
+        isCanBeConsumed = false
+        isCanBeResolved = false
+        isCanBeDeclared = true
+    }
+    listOf(
+        mainSourceSet.compileClasspathConfigurationName,
+        mainSourceSet.runtimeClasspathConfigurationName,
+        testSourceSet.compileClasspathConfigurationName,
+        testSourceSet.runtimeClasspathConfigurationName,
+    ).forEach { configName ->
+        configurations.named(configName).configure { extendsFrom(platformConfig) }
+    }
 }
 
 fun createConfiguration(configName: String) {
