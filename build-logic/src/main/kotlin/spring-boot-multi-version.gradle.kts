@@ -107,3 +107,8 @@ javaComponent.withVariantsFromConfiguration(configurations["apiElements"]) { ski
 javaComponent.withVariantsFromConfiguration(configurations["runtimeElements"]) { skip() }
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) { skip() }
 javaComponent.withVariantsFromConfiguration(configurations["javadocElements"]) { skip() }
+
+dependencies {
+    "springBoot3Platform"(platform("org.springframework.boot:spring-boot-dependencies:3.5.14"))
+    "springBoot4Platform"(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
+}

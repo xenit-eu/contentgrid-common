@@ -8,12 +8,12 @@ description = "Starter used to apply ContentGrid common opinions to Spring Boot 
 
 dependencies {
     commonApi project(':contentgrid-common-spring-actuators')
-    springBoot3Implementation(project(':contentgrid-common-spring-autoconfigure')){
+    springBoot3Implementation(project(':contentgrid-common-spring-autoconfigure')) {
         capabilities {
             requireFeature("spring-boot-3")
         }
     }
-    springBoot4Implementation(project(':contentgrid-common-spring-autoconfigure')){
+    springBoot4Implementation(project(':contentgrid-common-spring-autoconfigure')) {
         capabilities {
             requireFeature("spring-boot-4")
         }
