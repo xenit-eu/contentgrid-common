@@ -36,28 +36,32 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 )
 @ConditionalOnClass({
         SecurityAutoConfiguration.class, // spring-boot-autoconfigure
-        HealthEndpoint.class, // spring-boot-actuator
+        EndpointRequest.class, // spring-boot-actuator-autoconfigure
         SecurityFilterChain.class, // spring-security-web
         HttpServletRequest.class, // jakarta.servlet-api
         HttpSecurity.class // spring-security-config
 })
 public class ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration {
     @Bean
+    @ConditionalOnClass(InfoEndpoint.class)
     ExposedActuatorEndpoint exposedInfoActuatorEndpoint() {
         return new ExposedActuatorEndpoint(InfoEndpoint.class).withAllowPublicExposure(true);
     }
 
     @Bean
+    @ConditionalOnClass(HealthEndpoint.class)
     ExposedActuatorEndpoint exposedHealthActuatorEndpoint() {
         return new ExposedActuatorEndpoint(HealthEndpoint.class).withAllowPublicExposure(true);
     }
 
     @Bean
+    @ConditionalOnClass(PrometheusScrapeEndpoint.class)
     ExposedActuatorEndpoint exposedPrometheusScrapeActuatorEndpoint() {
         return new ExposedActuatorEndpoint(PrometheusScrapeEndpoint.class);
     }
 
     @Bean
+    @ConditionalOnClass(MetricsEndpoint.class)
     ExposedActuatorEndpoint exposedMetricsActuatorEndpoint() {
         return new ExposedActuatorEndpoint(MetricsEndpoint.class);
     }
