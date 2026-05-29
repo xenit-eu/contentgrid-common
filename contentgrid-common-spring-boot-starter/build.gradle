@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'spring-boot-multi-version'
+}
+
+description = "Starter used to apply ContentGrid common opinions to Spring Boot services"
+
+dependencies {
+    commonApi project(':contentgrid-common-spring-actuators')
+    springBoot3Implementation(project(':contentgrid-common-spring-autoconfigure')){
+        capabilities {
+            requireFeature("spring-boot-3")
+        }
+    }
+    springBoot4Implementation(project(':contentgrid-common-spring-autoconfigure')){
+        capabilities {
+            requireFeature("spring-boot-4")
+        }
+    }
+}

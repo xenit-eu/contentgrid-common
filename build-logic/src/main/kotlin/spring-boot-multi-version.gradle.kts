@@ -1,7 +1,3 @@
-import org.gradle.api.component.AdhocComponentWithVariants
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.tasks.SourceSetContainer
-
 fun String.capitalize() = replaceFirstChar { it.uppercaseChar() }
 fun String.toKebabCase() = replace(Regex("([A-Z])"), "-$1").replace(Regex("([a-zA-Z])(\\d)"), "$1-$2").lowercase()
 
@@ -21,8 +17,12 @@ features.forEach { name ->
     configure<JavaPluginExtension> {
         registerFeature(name) {
             usingSourceSet(mainSourceSet)
-            capability("com.contentgrid.common", "spring-boot", project.version.toString())
-            capability("com.contentgrid.common", name.toKebabCase(), project.version.toString())
+            capability("com.contentgrid.common", project.name + "-spring-boot-support", project.version.toString())
+            capability(
+                "com.contentgrid.common",
+                project.name + "-" + name.toKebabCase(),
+                project.version.toString()
+            )
             withJavadocJar()
             withSourcesJar()
         }
