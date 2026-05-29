@@ -1,5 +1,6 @@
 package com.contentgrid.common.spring.autoconfigure;
 
+import static com.contentgrid.common.spring.autoconfigure.TestApplication.filteringJar;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -7,16 +8,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.jar.JarFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -163,7 +158,8 @@ class ActuatorEndpointSecurityTest {
         // spring-boot-actuator-autoconfigure provides EndpointRequest, which is a class-level condition in Spring Boot 3.
         @Test
         void configurationIsNotAppliedWithoutActuatorAutoconfigure_springBoot3() {
-            assumeTrue(isSpringBoot3(), "EndpointRequest class-level condition only applies to Spring Boot 3");
+            assumeTrue(TestApplication.isSpringBoot3(),
+                    "EndpointRequest class-level condition only applies to Spring Boot 3");
             contextRunner
                     .withClassLoader(filteringJar("spring-boot-actuator-autoconfigure"))
                     .run(context -> assertThat(context)
@@ -174,7 +170,7 @@ class ActuatorEndpointSecurityTest {
         // spring-boot-security provides SecurityAutoConfiguration, which is a class-level condition in Spring Boot 4.
         @Test
         void configurationIsNotAppliedWithoutSpringBootSecurity_springBoot4() {
-            assumeTrue(isSpringBoot4(),
+            assumeTrue(TestApplication.isSpringBoot4(),
                     "SecurityAutoConfiguration class-level condition only applies to Spring Boot 4");
             contextRunner
                     .withClassLoader(filteringJar("spring-boot-security"))
@@ -198,7 +194,8 @@ class ActuatorEndpointSecurityTest {
         // spring-boot-health provides HealthEndpoint in Spring Boot 4 (it is part of spring-boot-actuator in SB3).
         @Test
         void springBootHealthAbsent_healthEndpointNotExposed_springBoot4() {
-            assumeTrue(isSpringBoot4(), "spring-boot-health is a separate artifact only in Spring Boot 4");
+            assumeTrue(TestApplication.isSpringBoot4(),
+                    "spring-boot-health is a separate artifact only in Spring Boot 4");
             webContextRunner()
                     .withClassLoader(filteringJar("spring-boot-health"))
                     .run(context -> {
@@ -211,7 +208,8 @@ class ActuatorEndpointSecurityTest {
         // spring-boot-micrometer-metrics provides both PrometheusScrapeEndpoint and MetricsEndpoint in Spring Boot 4.
         @Test
         void springBootMicrometerMetricsAbsent_springBoot4() {
-            assumeTrue(isSpringBoot4(), "spring-boot-micrometer-metrics is a separate artifact only in Spring Boot 4");
+            assumeTrue(TestApplication.isSpringBoot4(),
+                    "spring-boot-micrometer-metrics is a separate artifact only in Spring Boot 4");
             webContextRunner()
                     .withClassLoader(filteringJar("spring-boot-micrometer-metrics"))
                     .run(context -> {
@@ -220,33 +218,6 @@ class ActuatorEndpointSecurityTest {
                         assertThat(context).doesNotHaveBean("exposedMetricsActuatorEndpoint");
                         assertThat(context).hasSingleBean(SecurityFilterChain.class);
                     });
-        }
-
-        private static boolean isSpringBoot3() {
-            return SpringBootVersion.getVersion().startsWith("3.");
-        }
-
-        private static boolean isSpringBoot4() {
-            return SpringBootVersion.getVersion().startsWith("4.");
-        }
-
-        private static FilteredClassLoader filteringJar(String artifactId) {
-            String segment = "/" + artifactId + "/";
-            File jarFile = Arrays.stream(System.getProperty("java.class.path", "").split(File.pathSeparator))
-                    .map(File::new)
-                    .filter(f -> f.getPath().replace('\\', '/').contains(segment) && f.getName().endsWith(".jar"))
-                    .findFirst()
-                    .orElseThrow(() -> new AssertionError("No jar found for artifact: " + artifactId));
-            Set<String> classNames = new HashSet<>();
-            try (var jar = new JarFile(jarFile)) {
-                jar.stream()
-                        .filter(e -> e.getName().endsWith(".class"))
-                        .map(e -> e.getName().replace('/', '.').substring(0, e.getName().length() - ".class".length()))
-                        .forEach(classNames::add);
-            } catch (Exception e) {
-                throw new AssertionError("Failed to read jar for artifact: " + artifactId, e);
-            }
-            return new FilteredClassLoader(classNames::contains);
         }
 
         @Configuration(proxyBeanMethods = false)

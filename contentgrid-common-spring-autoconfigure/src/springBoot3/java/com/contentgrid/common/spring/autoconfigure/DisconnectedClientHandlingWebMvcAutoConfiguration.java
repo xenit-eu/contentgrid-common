@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @AutoConfiguration(after = WebMvcAutoConfiguration.class)
-@ConditionalOnClass(WebMvcConfigurer.class)
+@ConditionalOnClass({
+        WebMvcAutoConfiguration.class, // spring-boot-autoconfigure
+        WebMvcConfigurer.class // spring-webmvc
+})
 public class DisconnectedClientHandlingWebMvcAutoConfiguration {
     @Bean
     DisconnectedClientHandlingWebMvcConfigurer disconnectedClientHandlingWebMvcConfigurer() {
