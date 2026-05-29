@@ -41,4 +41,8 @@ dependencies {
     commonTestImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
+
+    // For actuator endpoint security test; so the prometheus endpoint is available
+    commonTestRuntimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
 }
