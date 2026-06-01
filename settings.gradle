@@ -27,3 +27,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'contentgrid-common'
+
+include 'contentgrid-common-spring-autoconfigure'
+include 'contentgrid-common-spring-actuators'
+include 'contentgrid-common-spring-boot-starter'
+
+includeBuild('build-logic')

@@ -1,0 +1,7 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'io.freefair.lombok'
+}
+
+description = "Wrapper for Spring Actuator endpoints to facilitate websecurity configuration"

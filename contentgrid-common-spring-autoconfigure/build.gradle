@@ -1,0 +1,48 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'spring-boot-multi-version'
+}
+
+description = "Autoconfiguration to apply ContentGrid common configuration to Spring Boot services"
+
+dependencies {
+    commonImplementation 'org.springframework.boot:spring-boot-autoconfigure'
+    commonImplementation project(':contentgrid-common-spring-actuators')
+
+    // ActuatorEndpointsWebSecurityAutoConfiguration
+    commonCompileOnly 'org.springframework.boot:spring-boot-actuator-autoconfigure'
+    commonCompileOnly 'org.springframework.security:spring-security-web'
+    commonCompileOnly 'org.springframework.security:spring-security-config'
+    commonCompileOnly 'jakarta.servlet:jakarta.servlet-api'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-security'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-micrometer-metrics'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-health'
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-actuator'
+
+    // DisconnectedClientHandlingWebMvcAutoConfiguration
+    commonCompileOnly 'org.springframework:spring-webmvc'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-webmvc'
+
+    // Tests
+    commonTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Application dependencies
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-security'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    springBoot3TestImplementation 'org.springframework.boot:spring-boot-starter-web'
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // Test utilities
+    commonTestImplementation 'org.springframework.security:spring-security-test'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
+
+    // For actuator endpoint security test; so the prometheus endpoint is available
+    commonTestRuntimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+}
