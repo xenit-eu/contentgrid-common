@@ -10,6 +10,8 @@ import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortT
 import org.springframework.boot.actuate.info.InfoEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.health.actuate.endpoint.HealthEndpoint;
 import org.springframework.boot.micrometer.metrics.actuate.endpoint.MetricsEndpoint;
 import org.springframework.boot.micrometer.metrics.autoconfigure.export.prometheus.PrometheusScrapeEndpoint;
@@ -40,6 +42,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
         HttpServletRequest.class, // jakarta.servlet-api
         HttpSecurity.class // spring-security-config
 })
+@ConditionalOnWebApplication(type = Type.SERVLET)
 public class ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration {
     @Bean
     @ConditionalOnClass(InfoEndpoint.class) // spring-boot-actuator
