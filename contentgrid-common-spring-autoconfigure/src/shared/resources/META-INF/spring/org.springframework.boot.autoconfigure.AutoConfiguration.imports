@@ -1,2 +1,3 @@
 com.contentgrid.common.spring.autoconfigure.ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration
 com.contentgrid.common.spring.autoconfigure.DisconnectedClientHandlingWebMvcAutoConfiguration
+com.contentgrid.common.spring.autoconfigure.FlywayPostgresAutoConfiguration

@@ -35,3 +35,10 @@ even when the connection reset is due to a dependency that is called by the serv
 connection).
 
 We patch this to return a proper HTTP 500 instead when we are able to.
+
+### Flyway
+
+When using flyway with PostgreSQL, transactional locking is disabled.
+
+This is to be compatible with `CREATE INDEX CONCURRENTLY` and other non-transactional statements,
+that don't work together with transactional locking.

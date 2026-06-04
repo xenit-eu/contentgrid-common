@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 @SpringBootApplication
 public class TestApplication {
 
+    public static final String AUTOCONF_DATABASE = "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration";
+
     static FilteredClassLoader filteringJar(String artifactId) {
         String segment = "/" + artifactId + "/";
         File jarFile = Arrays.stream(System.getProperty("java.class.path", "").split(File.pathSeparator))
