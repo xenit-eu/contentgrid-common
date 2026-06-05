@@ -1,5 +1,6 @@
 package com.contentgrid.common.spring.autoconfigure;
 
+import static com.contentgrid.common.spring.autoconfigure.TestApplication.AUTOCONF_DATABASE;
 import static com.contentgrid.common.spring.autoconfigure.TestApplication.filteringJar;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -31,7 +32,9 @@ import org.springframework.web.context.WebApplicationContext;
  * Public endpoints (health, info) are accessible from any address.
  * Non-public endpoints (prometheus, metrics) are only accessible from loopback addresses.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.autoconfigure.exclude="+ AUTOCONF_DATABASE
+})
 class ActuatorEndpointSecurityTest {
 
     @Autowired

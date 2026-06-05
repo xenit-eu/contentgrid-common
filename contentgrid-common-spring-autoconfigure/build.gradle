@@ -26,6 +26,12 @@ dependencies {
 
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-webmvc'
 
+    // FlywayPostgresAutoConfiguration
+    commonCompileOnly 'org.flywaydb:flyway-core'
+    commonCompileOnly 'org.flywaydb:flyway-database-postgresql'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-flyway'
+
     // Tests
     commonTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -35,6 +41,18 @@ dependencies {
 
     springBoot3TestImplementation 'org.springframework.boot:spring-boot-starter-web'
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+    // FlywayPostgresAutoConfigurationTest
+    commonTestImplementation 'org.flywaydb:flyway-database-postgresql'
+    commonTestImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    commonTestRuntimeOnly 'org.postgresql:postgresql'
+
+    springBoot3TestImplementation 'org.testcontainers:postgresql'
+    springBoot4TestImplementation 'org.testcontainers:testcontainers-postgresql'
+
+    springBoot3Implementation 'org.flywaydb:flyway-core'
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-flyway'
 
     // Test utilities
     commonTestImplementation 'org.springframework.security:spring-security-test'

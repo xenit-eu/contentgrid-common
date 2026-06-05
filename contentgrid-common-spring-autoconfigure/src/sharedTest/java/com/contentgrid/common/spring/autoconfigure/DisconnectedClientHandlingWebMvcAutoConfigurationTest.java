@@ -28,7 +28,9 @@ import org.springframework.web.util.DisconnectedClientHelper;
  * Verifies that a disconnected client exception (detected via "broken pipe" in the message)
  * results in HTTP 500 rather than a silent 200 OK.
  */
-@SpringBootTest
+@SpringBootTest(properties = {
+        "spring.autoconfigure.exclude="+TestApplication.AUTOCONF_DATABASE
+})
 class DisconnectedClientHandlingWebMvcAutoConfigurationTest {
 
     @Autowired

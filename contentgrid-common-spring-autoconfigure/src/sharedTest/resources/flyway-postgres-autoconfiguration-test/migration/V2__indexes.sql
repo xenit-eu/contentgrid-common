@@ -1,0 +1,1 @@
+CREATE INDEX CONCURRENTLY test_idx ON test("name");

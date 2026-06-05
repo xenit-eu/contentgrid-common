@@ -16,7 +16,10 @@ import org.springframework.web.client.RestTemplate;
  * When a separate management port is configured, network-level isolation protects it.
  * All configured actuator endpoints are accessible on the management port.
  */
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = "management.server.port=0")
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = {
+        "management.server.port=0",
+        "spring.autoconfigure.exclude="+TestApplication.AUTOCONF_DATABASE
+})
 class ActuatorEndpointSecuritySeparatePortTest {
 
     @LocalManagementPort
