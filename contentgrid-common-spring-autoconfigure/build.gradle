@@ -72,7 +72,7 @@ dependencies {
     // Test utilities
     commonTestImplementation 'org.springframework.security:spring-security-test'
     commonTestImplementation 'org.springframework.boot:spring-boot-starter-test'
-    commonTestImplementation 'com.github.tomakehurst:wiremock-jre8-standalone:2.35.1'
+    commonTestImplementation 'com.github.tomakehurst:wiremock-jre8-standalone:2.35.2'
     commonTestRuntimeOnly 'org.springframework:spring-webflux' // for WebTestClient
 
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
