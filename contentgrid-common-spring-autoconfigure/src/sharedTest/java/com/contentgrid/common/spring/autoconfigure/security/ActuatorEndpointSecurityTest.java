@@ -1,4 +1,4 @@
-package com.contentgrid.common.spring.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.security;
 
 import static com.contentgrid.common.spring.autoconfigure.TestApplication.AUTOCONF_DATABASE;
 import static com.contentgrid.common.spring.autoconfigure.TestApplication.filteringJar;
@@ -8,7 +8,9 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.contentgrid.common.spring.autoconfigure.TestApplication;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

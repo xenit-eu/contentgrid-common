@@ -28,6 +28,16 @@ Allows some actuator endpoints through spring-security.
 3. Privately exposed endpoints (`/actuator/metrics` & `/actuator/prometheus`) are made accessible when the management
    server runs on a separate port
 
+### Multi-tenant OAuth2 resource server
+
+Allow configuring multiple trusted JWT issuers that will all be trusted.
+
+The configuration property `contentgrid.security.oauth2.trusted-jwt-issuers` can be set to a list of JWT issuer URIs.
+
+The configuration automatically backs-away when a `SecurityFilterChain` is configured.
+
+This is a multi-value alternative to `spring.security.oauth2.resourceserver.jwt.issuer-uri`.
+
 ### Disconnected client handling
 
 The default of spring is to accidentally send a HTTP 200 OK response when a connection reset occurs,

@@ -14,7 +14,7 @@ public class TestApplication {
 
     public static final String AUTOCONF_DATABASE = "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration";
 
-    static FilteredClassLoader filteringJar(String artifactId) {
+    public static FilteredClassLoader filteringJar(String artifactId) {
         String segment = "/" + artifactId + "/";
         File jarFile = Arrays.stream(System.getProperty("java.class.path", "").split(File.pathSeparator))
                 .map(File::new)
@@ -33,11 +33,11 @@ public class TestApplication {
         return new FilteredClassLoader(classNames::contains);
     }
 
-    static boolean isSpringBoot3() {
+    public static boolean isSpringBoot3() {
         return SpringBootVersion.getVersion().startsWith("3.");
     }
 
-    static boolean isSpringBoot4() {
+    public static boolean isSpringBoot4() {
         return SpringBootVersion.getVersion().startsWith("4.");
     }
 }
