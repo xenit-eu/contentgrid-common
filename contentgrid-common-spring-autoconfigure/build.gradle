@@ -66,7 +66,7 @@ dependencies {
     springBoot3TestImplementation 'org.testcontainers:postgresql'
     springBoot4TestImplementation 'org.testcontainers:testcontainers-postgresql'
 
-    springBoot3Implementation 'org.flywaydb:flyway-core'
+    springBoot3TestImplementation 'org.flywaydb:flyway-core'
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-flyway'
 
     // Test utilities
