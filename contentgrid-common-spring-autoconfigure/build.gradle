@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'io.freefair.lombok'
     id 'spring-boot-multi-version'
 }
 
@@ -20,6 +21,12 @@ dependencies {
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-micrometer-metrics'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-health'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-actuator'
+
+    // MultiTenantOAuth2ResourceServerAutoConfiguration
+    commonCompileOnly 'org.springframework.security:spring-security-oauth2-resource-server'
+
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-security-oauth2-resource-server'
+
 
     // DisconnectedClientHandlingWebMvcAutoConfiguration
     commonCompileOnly 'org.springframework:spring-webmvc'
@@ -42,6 +49,14 @@ dependencies {
     springBoot3TestImplementation 'org.springframework.boot:spring-boot-starter-web'
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-webmvc'
 
+    //  MultiTenantOAuth2ResourceServerAutoConfigurationTest
+    commonTestImplementation 'org.springframework.security:spring-security-oauth2-jose'
+    commonTestImplementation 'org.springframework.boot:spring-boot-starter-security'
+
+    springBoot3TestImplementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+
+
     // FlywayPostgresAutoConfigurationTest
     commonTestImplementation 'org.flywaydb:flyway-database-postgresql'
     commonTestImplementation 'org.springframework.boot:spring-boot-testcontainers'
@@ -57,6 +72,8 @@ dependencies {
     // Test utilities
     commonTestImplementation 'org.springframework.security:spring-security-test'
     commonTestImplementation 'org.springframework.boot:spring-boot-starter-test'
+    commonTestImplementation 'com.github.tomakehurst:wiremock-jre8-standalone:2.35.1'
+    commonTestRuntimeOnly 'org.springframework:spring-webflux' // for WebTestClient
 
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
 

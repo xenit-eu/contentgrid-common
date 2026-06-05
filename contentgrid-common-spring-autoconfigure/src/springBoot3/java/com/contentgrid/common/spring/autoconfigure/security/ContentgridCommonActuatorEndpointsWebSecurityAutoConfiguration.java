@@ -1,4 +1,4 @@
-package com.contentgrid.common.spring.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.security;
 
 import com.contentgrid.common.spring.actuators.ExposedActuatorEndpoint;
 import jakarta.servlet.http.HttpServletRequest;

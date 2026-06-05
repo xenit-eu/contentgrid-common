@@ -1,7 +1,8 @@
-package com.contentgrid.common.spring.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.contentgrid.common.spring.autoconfigure.TestApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -18,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = {
         "management.server.port=0",
-        "spring.autoconfigure.exclude="+TestApplication.AUTOCONF_DATABASE
+        "spring.autoconfigure.exclude="+ TestApplication.AUTOCONF_DATABASE
 })
 class ActuatorEndpointSecuritySeparatePortTest {
 
