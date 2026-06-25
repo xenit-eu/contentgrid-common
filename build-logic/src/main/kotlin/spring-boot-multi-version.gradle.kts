@@ -109,6 +109,6 @@ javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
 javaComponent.withVariantsFromConfiguration(configurations["javadocElements"]) { skip() }
 
 dependencies {
-    "springBoot3Platform"(platform("org.springframework.boot:spring-boot-dependencies:3.5.15"))
-    "springBoot4Platform"(platform("org.springframework.boot:spring-boot-dependencies:4.0.6"))
+    "springBoot3Platform"(platform("org.springframework.boot:spring-boot-dependencies:4.1.0"))
+    "springBoot4Platform"(platform("org.springframework.boot:spring-boot-dependencies:4.1.0"))
 }
