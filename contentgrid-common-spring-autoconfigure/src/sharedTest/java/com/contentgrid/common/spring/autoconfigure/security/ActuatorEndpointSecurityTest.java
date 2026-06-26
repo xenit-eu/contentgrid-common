@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.contentgrid.common.spring.autoconfigure.TestApplication;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -151,8 +150,10 @@ class ActuatorEndpointSecurityTest {
 
         @Test
         void configurationIsNotAppliedWithoutServletApi() {
-            // jakarta.servlet-api is compileOnly; at test runtime HttpServletRequest is provided by
-            // tomcat-embed-core, so we filter the class directly rather than by jar.
+            // At test runtime, HttpServletRequest is provided by tomcat-embed-core
+            // instead of jakarta.servlet-api, so we filter the class directly rather than by jar.
+            // The servlet application will not be started. Since there is also no webflux application,
+            // the autoConfiguration should not be applied.
             contextRunner
                     .withClassLoader(new FilteredClassLoader(HttpServletRequest.class))
                     .run(context -> assertThat(context)
