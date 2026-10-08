@@ -15,7 +15,6 @@ dependencies {
     commonCompileOnly 'org.springframework.boot:spring-boot-actuator-autoconfigure'
     commonCompileOnly 'org.springframework.security:spring-security-web'
     commonCompileOnly 'org.springframework.security:spring-security-config'
-    commonCompileOnly 'jakarta.servlet:jakarta.servlet-api'
 
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-security'
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-micrometer-metrics'
@@ -30,6 +29,7 @@ dependencies {
 
     // DisconnectedClientHandlingWebMvcAutoConfiguration
     commonCompileOnly 'org.springframework:spring-webmvc'
+    commonCompileOnly 'jakarta.servlet:jakarta.servlet-api'
 
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-webmvc'
 
