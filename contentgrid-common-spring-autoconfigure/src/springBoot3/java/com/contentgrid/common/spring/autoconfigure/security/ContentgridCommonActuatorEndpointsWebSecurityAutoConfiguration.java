@@ -1,7 +1,6 @@
 package com.contentgrid.common.spring.autoconfigure.security;
 
 import com.contentgrid.common.spring.actuators.ExposedActuatorEndpoint;
-import jakarta.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.function.Predicate;
@@ -15,7 +14,6 @@ import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScra
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -40,10 +38,9 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
         SecurityAutoConfiguration.class, // spring-boot-autoconfigure
         EndpointRequest.class, // spring-boot-actuator-autoconfigure
         SecurityFilterChain.class, // spring-security-web
-        HttpServletRequest.class, // jakarta.servlet-api
         HttpSecurity.class // spring-security-config
 })
-@ConditionalOnWebApplication(type = Type.SERVLET)
+@ConditionalOnWebApplication
 public class ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration {
     @Bean
     @ConditionalOnClass(InfoEndpoint.class)
