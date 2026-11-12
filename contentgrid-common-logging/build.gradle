@@ -1,0 +1,20 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+description = "Structured JSON logging defaults for ContentGrid Spring Boot services"
+
+dependencies {
+    compileOnly platform('org.springframework.boot:spring-boot-dependencies:4.0.7')
+    compileOnly 'org.springframework.boot:spring-boot'
+    compileOnly 'ch.qos.logback:logback-classic'
+    compileOnly 'org.jspecify:jspecify'
+
+    testImplementation platform('org.springframework.boot:spring-boot-dependencies:4.0.7')
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'tools.jackson.core:jackson-databind'
+
+    testRuntimeOnly 'ch.qos.logback:logback-classic'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}

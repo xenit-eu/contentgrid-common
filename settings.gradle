@@ -32,5 +32,6 @@ rootProject.name = 'contentgrid-common'
 include 'contentgrid-common-spring-autoconfigure'
 include 'contentgrid-common-spring-actuators'
 include 'contentgrid-common-spring-boot-starter'
+include 'contentgrid-common-logging'
 
 includeBuild('build-logic')
