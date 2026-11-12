@@ -14,31 +14,33 @@ import org.springframework.core.io.support.SpringFactoriesLoader;
  */
 class Boot4LoggingRegistrationsTest {
 
+    private static final String CONTENTGRID_PACKAGE = "com.contentgrid.common.";
+
     private static final String LOGGING_PACKAGE = "com.contentgrid.common.spring.autoconfigure.logging.";
 
     private static final String ENVIRONMENT_POST_PROCESSOR =
             LOGGING_PACKAGE + "StructuredLoggingEnvironmentPostProcessor";
 
-    private static final String NETTY_AUTO_CONFIGURATION = LOGGING_PACKAGE + "NettyAccessLoggingAutoConfiguration";
-
-    private static final List<String> PRE_EXISTING_AUTO_CONFIGURATIONS = List.of(
+    private static final List<String> EXPECTED_AUTO_CONFIGURATIONS = List.of(
             "com.contentgrid.common.spring.autoconfigure.DisconnectedClientHandlingWebMvcAutoConfiguration",
             "com.contentgrid.common.spring.autoconfigure.FlywayPostgresAutoConfiguration",
             "com.contentgrid.common.spring.autoconfigure.security.ContentgridCommonActuatorEndpointsWebSecurityAutoConfiguration",
-            "com.contentgrid.common.spring.autoconfigure.security.MultiTenantOAuth2ResourceServerAutoConfiguration"
+            "com.contentgrid.common.spring.autoconfigure.security.MultiTenantOAuth2ResourceServerAutoConfiguration",
+            LOGGING_PACKAGE + "NettyAccessLoggingAutoConfiguration"
     );
 
     private final ClassLoader classLoader = getClass().getClassLoader();
 
     @Test
     void keepsThePreExistingAutoConfigurationsAndAddsTheNettyIntegrationExactlyOnce() {
-        List<String> candidates = ImportCandidates
+        List<String> contentgridCandidates = ImportCandidates
                 .load(AutoConfiguration.class, this.classLoader)
-                .getCandidates();
+                .getCandidates()
+                .stream()
+                .filter(candidate -> candidate.startsWith(CONTENTGRID_PACKAGE))
+                .toList();
 
-        assertThat(candidates).containsAll(PRE_EXISTING_AUTO_CONFIGURATIONS);
-        assertThat(candidates.stream().filter(NETTY_AUTO_CONFIGURATION::equals).toList())
-                .containsExactly(NETTY_AUTO_CONFIGURATION);
+        assertThat(contentgridCandidates).containsExactlyElementsOf(EXPECTED_AUTO_CONFIGURATIONS);
     }
 
     @Test

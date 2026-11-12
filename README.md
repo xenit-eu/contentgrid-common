@@ -32,7 +32,7 @@ Adopt them by depending on the logging module next to that artifact (or next to 
 ```groovy
 dependencies {
     implementation 'com.contentgrid.common:contentgrid-common-logging:0.1.6-SNAPSHOT'
-    implementation('com.contentgrid.common:contentgrid-common-spring-autoconfigure') {
+    implementation('com.contentgrid.common:contentgrid-common-spring-autoconfigure:0.1.6-SNAPSHOT') {
         capabilities {
             requireFeature('spring-boot-4')
         }
@@ -63,7 +63,7 @@ applied when the logging module, Spring Boot's Reactor Netty web server support 
 classpath. Reactor Netty is a compile-only dependency of that artifact, so servlet services do not inherit Netty or its
 configuration. Access logging is disabled by default and is enabled with the JVM property
 `reactor.netty.http.server.accessLogEnabled=true`. Enabled, it writes one `type=access` record when the response write
-completes, with the same JSON field names and types as the application records: `timestamp`, `type`, `component`,
+completes, with the same JSON encoding conventions as the application records: `timestamp`, `type`, `component`,
 `requestTime` (seconds with millisecond precision), `responseStatus`, `requestMethod`, `requestUri` (the original
 request URI, query string included), `request` (method, URI and protocol) and `remoteAddr` (the client host address
 without port, or the forwarded address when request forwarding is enabled).
