@@ -1,4 +1,4 @@
-package com.contentgrid.common.logging.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

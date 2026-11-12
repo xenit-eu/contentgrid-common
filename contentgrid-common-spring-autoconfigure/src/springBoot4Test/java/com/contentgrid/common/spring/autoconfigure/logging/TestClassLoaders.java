@@ -1,4 +1,4 @@
-package com.contentgrid.common.logging;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import java.net.URL;
 import java.util.List;
@@ -29,6 +29,11 @@ final class TestClassLoaders {
     static ClassLoader withoutLogback() {
         return new FilteringClassLoader(TestClassLoaders.class.getClassLoader(), STANDARD_LOGBACK_CONFIGURATIONS,
                 List.of("ch.qos.logback."), Map.of());
+    }
+
+    static ClassLoader withoutLoggingCore() {
+        return new FilteringClassLoader(TestClassLoaders.class.getClassLoader(), STANDARD_LOGBACK_CONFIGURATIONS,
+                List.of("com.contentgrid.common.logging."), Map.of());
     }
 
     private static final class FilteringClassLoader extends ClassLoader {

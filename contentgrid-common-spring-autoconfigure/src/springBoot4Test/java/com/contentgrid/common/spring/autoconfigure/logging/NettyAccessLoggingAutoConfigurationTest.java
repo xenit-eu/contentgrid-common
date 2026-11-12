@@ -1,7 +1,9 @@
-package com.contentgrid.common.logging.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.contentgrid.common.logging.ContentGridStructuredLogFormatter;
+import com.contentgrid.common.logging.HttpAccessLog;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -46,6 +48,23 @@ class NettyAccessLoggingAutoConfigurationTest {
     @Test
     void backsOffWithoutReactorNettyHttpServer() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(HttpServer.class)).run(context -> {
+            assertThat(context).hasNotFailed();
+            assertThat(context).doesNotHaveBean(NettyServerCustomizer.class);
+        });
+    }
+
+    @Test
+    void backsOffWithoutTheLoggingCoreFormatter() {
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ContentGridStructuredLogFormatter.class))
+                .run(context -> {
+                    assertThat(context).hasNotFailed();
+                    assertThat(context).doesNotHaveBean(NettyServerCustomizer.class);
+                });
+    }
+
+    @Test
+    void backsOffWithoutTheLoggingCoreAccessRecord() {
+        this.contextRunner.withClassLoader(new FilteredClassLoader(HttpAccessLog.class)).run(context -> {
             assertThat(context).hasNotFailed();
             assertThat(context).doesNotHaveBean(NettyServerCustomizer.class);
         });

@@ -3,21 +3,16 @@ plugins {
     id 'maven-publish'
 }
 
-description = "Structured JSON logging defaults for ContentGrid Spring Boot services"
+description = "Structured JSON log formatting and Logback configuration for ContentGrid Spring Boot services"
 
 dependencies {
     compileOnly platform('org.springframework.boot:spring-boot-dependencies:4.0.7')
     compileOnly 'org.springframework.boot:spring-boot'
-    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    compileOnly 'org.springframework.boot:spring-boot-reactor-netty'
-    compileOnly 'io.projectreactor.netty:reactor-netty-http'
     compileOnly 'ch.qos.logback:logback-classic'
     compileOnly 'org.jspecify:jspecify'
 
     testImplementation platform('org.springframework.boot:spring-boot-dependencies:4.0.7')
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-reactor-netty'
-    testImplementation 'io.projectreactor.netty:reactor-netty-http'
     testImplementation 'tools.jackson.core:jackson-databind'
 
     testRuntimeOnly 'ch.qos.logback:logback-classic'

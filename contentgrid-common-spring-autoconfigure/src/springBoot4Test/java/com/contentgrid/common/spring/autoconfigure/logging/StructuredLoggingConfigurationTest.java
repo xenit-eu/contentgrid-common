@@ -1,7 +1,8 @@
-package com.contentgrid.common.logging;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.contentgrid.common.logging.ContentGridStructuredLogFormatter;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -77,7 +78,7 @@ class StructuredLoggingConfigurationTest {
             System.setOut(this.originalOut);
             System.setErr(this.originalErr);
             this.loggingSystem.initialize(new LoggingInitializationContext(new StandardEnvironment()),
-                    "classpath:test-logback.xml", null);
+                    "classpath:logback-test.xml", null);
         }
         finally {
             System.setProperties(this.originalSystemProperties);

@@ -1,7 +1,8 @@
-package com.contentgrid.common.logging;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.contentgrid.common.logging.ContentGridStructuredLogFormatter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,6 +84,16 @@ class StructuredLoggingEnvironmentPostProcessorTest {
         assertThat(environment.getProperty("logging.structured.format.console")).isNull();
         assertThat(environment.getProperty("logging.config")).isNull();
         assertThat(environment.getProperty("spring.main.banner-mode")).isEqualTo("off");
+    }
+
+    @Test
+    void installsNoDefaultsWhenTheLoggingCoreIsAbsent() {
+        var environment = apply(TestClassLoaders.withoutLoggingCore());
+
+        assertThat(environment.getProperty("spring.main.banner-mode")).isNull();
+        assertThat(environment.getProperty("logging.structured.format.console")).isNull();
+        assertThat(environment.getProperty("logging.config")).isNull();
+        assertThat(environment.getPropertySources().get(DEFAULTS_PROPERTY_SOURCE)).isNull();
     }
 
     @Test

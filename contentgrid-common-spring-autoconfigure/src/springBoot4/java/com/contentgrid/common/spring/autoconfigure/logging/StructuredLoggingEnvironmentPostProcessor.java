@@ -1,4 +1,4 @@
-package com.contentgrid.common.logging;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,11 +14,14 @@ import org.springframework.util.ClassUtils;
  * Supplies logging defaults before logging is initialized.
  * <p>
  * The defaults are added as the lowest-priority property source so explicit application properties win. A consumer
- * Logback configuration resource is never replaced by the packaged configuration.
+ * Logback configuration resource is never replaced by the packaged configuration. The logging module is optional: when
+ * it is absent no defaults are installed at all.
  */
 public class StructuredLoggingEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     static final String DEFAULTS_PROPERTY_SOURCE = "contentgrid-logging-defaults";
+
+    static final String STRUCTURED_LOG_FORMATTER = "com.contentgrid.common.logging.ContentGridStructuredLogFormatter";
 
     static final String PACKAGED_LOGGING_CONFIGURATION =
             "classpath:com/contentgrid/common/logging/logback-spring.xml";
@@ -40,10 +43,14 @@ public class StructuredLoggingEnvironmentPostProcessor implements EnvironmentPos
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        // The class is checked by name so an absent logging module cannot cause a linkage failure.
+        if (!ClassUtils.isPresent(STRUCTURED_LOG_FORMATTER, this.classLoader)) {
+            return;
+        }
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("spring.main.banner-mode", "off");
         if (ClassUtils.isPresent(LOGBACK_LOGGER_CLASS, this.classLoader)) {
-            defaults.put("logging.structured.format.console", ContentGridStructuredLogFormatter.class.getName());
+            defaults.put("logging.structured.format.console", STRUCTURED_LOG_FORMATTER);
             if (!hasConsumerLoggingConfiguration()) {
                 defaults.put("logging.config", PACKAGED_LOGGING_CONFIGURATION);
             }

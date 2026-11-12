@@ -1,4 +1,4 @@
-package com.contentgrid.common.logging.autoconfigure;
+package com.contentgrid.common.spring.autoconfigure.logging;
 
 import com.contentgrid.common.logging.HttpAccessLog;
 import java.math.BigDecimal;
