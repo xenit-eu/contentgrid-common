@@ -39,6 +39,11 @@ dependencies {
 
     springBoot4CompileOnly 'org.springframework.boot:spring-boot-flyway'
 
+    // StructuredLoggingEnvironmentPostProcessor and NettyAccessLoggingAutoConfiguration
+    springBoot4CompileOnly project(':contentgrid-common-logging')
+    springBoot4CompileOnly 'org.springframework.boot:spring-boot-reactor-netty'
+    springBoot4CompileOnly 'io.projectreactor.netty:reactor-netty-http'
+
     // Tests
     commonTestRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -76,6 +81,13 @@ dependencies {
     commonTestRuntimeOnly 'org.springframework:spring-webflux' // for WebTestClient
 
     springBoot4TestImplementation 'org.springframework.boot:spring-boot-webmvc-test'
+
+    // StructuredLoggingEnvironmentPostProcessorTest, NettyAccessLoggingAutoConfigurationTest
+    springBoot4TestImplementation project(':contentgrid-common-logging')
+    springBoot4TestImplementation 'org.springframework.boot:spring-boot-reactor-netty'
+    springBoot4TestImplementation 'io.projectreactor.netty:reactor-netty-http'
+    springBoot4TestImplementation 'ch.qos.logback:logback-classic'
+    springBoot4TestImplementation 'tools.jackson.core:jackson-databind'
 
     // For actuator endpoint security test; so the prometheus endpoint is available
     commonTestRuntimeOnly 'io.micrometer:micrometer-registry-prometheus'
