@@ -47,6 +47,16 @@ records contain `timestamp` (numeric Unix seconds with millisecond precision), `
 `shortMessage`, `fullMessage`, and nested MDC/key-value `context` fields. Source location and caller data are never
 collected. `fullMessage` includes the complete throwable, cause and suppressed chain.
 
+Access logging is installed by an optional auto-configuration that is only applied when Spring Boot's Reactor Netty
+web server support and Reactor Netty itself are on the classpath. Reactor Netty is a compile-only dependency of this
+module, so servlet services do not inherit Netty or its configuration. Access logging is disabled by default and is
+enabled with the JVM property `reactor.netty.http.server.accessLogEnabled=true`. Enabled, it writes one `type=access`
+record when the response write completes, with the same field names and types as the application records, the original
+request URI (query string included), and the forwarded client address when request forwarding is enabled.
+
+An application can replace the Netty customizer by declaring its own `NettyServerCustomizer` bean named
+`accessLogServerCustomizer`; other `NettyServerCustomizer` beans are unaffected and access logging stays installed.
+
 The existing `contentgrid-common-spring-boot-starter` is unaffected and does not include this module.
 
 ### Actuator security
